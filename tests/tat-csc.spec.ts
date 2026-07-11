@@ -19,4 +19,14 @@ test.describe('TAT CSC form', () => {
     await expect(successMessage).toBeVisible()
     await expect(successMessage).toHaveText('Message successfully sent.')
   })
+
+  test('errors out when required fields are missing', async ({ page }) => {
+    // Act
+    await page.getByRole('button', { name: 'Send' }).click()
+
+    // Assert
+    const errorMessage = await page.locator('.error')
+    await expect(errorMessage).toBeVisible()
+    await expect(errorMessage).toHaveText('Validate the required fields!')
+  })
 })
