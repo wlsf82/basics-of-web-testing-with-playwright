@@ -29,4 +29,18 @@ test.describe('TAT CSC form', () => {
     await expect(errorMessage).toBeVisible()
     await expect(errorMessage).toHaveText('Validate the required fields!')
   })
+
+  test('errors out when submitting the form filling mandatory fields but with invalid email', async ({ page }) => {
+    // Act
+    await page.getByLabel('First name').fill('John')
+    await page.getByLabel('Last name').fill('Doe')
+    await page.getByLabel('Email').fill('invalid-email')
+    await page.locator('textarea').fill('I would like to know more about your services.')
+    await page.getByRole('button', { name: 'Send' }).click()
+
+    // Assert
+    const errorMessage = await page.locator('.error')
+    await expect(errorMessage).toBeVisible()
+    await expect(errorMessage).toHaveText('Validate the required fields!')
+  })
 })
